@@ -1,0 +1,34 @@
+<script type="text/javascript" src="/javascripts/require.js"></script>
+<script type="text/javascript">
+	requirejs.config({
+        baseUrl:"/javascripts",
+
+        paths: { 
+            jquery:'//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'
+            ,ejs:'/javascripts/lib/ejs'
+            ,bootstrap:'lib/bootstrap.min' 
+            ,clientUtils:"/javascripts/clientUtils"
+            ,jqueryUi:"//code.jquery.com/ui/1.10.3/jquery-ui"
+        },
+
+        shim: {
+            jquery : {
+                exports:"$"
+            },
+            jqueryUi : {
+                deps:["jquery"]
+            },
+            bootstrap : {
+                // bootstrap button conflicts with jqueryUi, but it works if we load jqueryUi first
+                deps:["jquery", "jqueryUi"] 
+            },
+            ejs: {
+                deps:['jquery'],
+                exports:'EJS'
+            },
+            clientUtils : {
+            	deps:['jquery']
+            }
+        }
+    });
+</script>

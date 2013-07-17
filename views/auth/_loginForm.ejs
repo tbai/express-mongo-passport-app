@@ -1,0 +1,18 @@
+<form method="POST" action="/login" class="auth" name="login">
+    <div>
+      <div class="control-group">
+        <input type="text" id="inputEmail" placeholder="Email" name="email"
+         value="<%=fieldValue('email')%>" ></input>
+      </div>
+      <div class="control-group">
+        <input type="password" id="inputPassword" placeholder="Password" name="password"></input>
+      </div>
+      <br/>
+      <button type="submit" class="btn btn" style="padding-left:40px; padding-right:40px;">Sign in</button>
+    </div>
+</form>
+<div >
+  <hr>
+  <a class="pull-left" href="/recover">Recover password</a>
+  <a class="pull-right" href="/register">Register</a>
+</div>

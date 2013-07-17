@@ -1,0 +1,22 @@
+<form action="/register" name="register" method="POST" class="auth">
+    <div>
+      <div class="control-group">
+        <input type="text" id="inputEmail" placeholder="Email" name="email"
+        value="<%=fieldValue('email')%>"
+        ></input>
+      </div>
+      <div class="control-group">
+        <input type="password" id="inputPassword" placeholder="Password" name="password" ></input>
+      </div>
+      <div class="control-group">
+        <input type="password" id="verifyPassword" placeholder="Verify password" name="verifypassword"></input> 
+      </div>           
+      <br/><br/>
+      <button type="submit" class="btn btn" style="padding-left:40px; padding-right:40px;">Register</button>
+    </div>
+</form>
+<div >
+  <hr>
+  <a class="pull-left" href="/recover">Recover password</a>
+  <a class="pull-right" href="/login">Login</a>
+</div>
