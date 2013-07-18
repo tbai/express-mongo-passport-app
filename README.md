@@ -5,7 +5,7 @@ Getting started
 
 2. Install mongodb: http://www.mongodb.org/
 
-3. Install dependencies. Go to the project folder(CodeBrowser) and run:
+3. Install dependencies. Go to the project folder and run:
       sudo npm install
 
 4. Check the configurations in config.js and start the server:   
