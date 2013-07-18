@@ -1,57 +1,23 @@
-var routes = require('./routes/routes'),
-    db = require("./models/db");
+var routes = require('./routes/routes')
+    ,db = require("./models/db")
+    ,passport = require('passport')
+    ,LocalStrategy = require('passport-local').Strategy;
 
-// setup passport for simple login
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
 
-passport.use(new LocalStrategy( {
-    usernameField: 'email',
-    passwordField: 'password'
-}, function(username, password, done) {
-    db.User.findOne({ email: username }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user || !user.verifyPassword(password)) {
-            return done(null, false, {message:'Invalid username or password.',email:username});
-        } else if (user.status == "created"){
-            return done(null, false, {message:'User is not activated, check your email and click in the verification link.',email:username});
-        }
-        return done(null, user);
-    });
-}));
-
-passport.serializeUser(function(user, done) {
-  done(null, user._id);
-});
-
-passport.deserializeUser(function(id, done) {
-  db.User.findById(id, function (err, user) {
-    done(err, user);
-  });
-});
-
-function isAuth(req, res, next) {
-    var activateAuth = false;
-    if (activateAuth){
-        if (req.isAuthenticated()) { return next(); }
-        req.session.requestedUrl = req.url;
-        res.redirect('/login');
-    } else {
-        return next();
-    }
+exports.setup = function(app){
+    setupAppUrls(app);
+    setupAuthUrls(app);
 }
 
-
-exports.setup = function(app){    
- 
+// Place your application urls here
+function setupAppUrls(app){
     // pages
-    app.get('/',                          isAuth, routes.public.index);
-    app.get('/home',                      isAuth, routes.home.index);
-
-    setupAuthRoutes(app);
+    app.get('/',        isAuthenticated, routes.public.index);
+    app.get('/home',    isAuthenticated, routes.home.index);
 }
 
-function setupAuthRoutes(app){
+// Authentication urls
+function setupAuthUrls(app){
     // ----------------------------------------------
     // security / authentication
     // ----------------------------------------------
@@ -84,3 +50,46 @@ function setupAuthRoutes(app){
     app.get('/recover', routes.auth.recoverForm);
     app.post('/recover', routes.auth.recover);
 }
+
+
+
+// setup passport for simple login
+passport.use(new LocalStrategy( {
+    usernameField: 'email',
+    passwordField: 'password'
+}, function(username, password, done) {
+    db.User.findOne({ email: username }, function(err, user) {
+        if (err) { return done(err); }
+        if (!user || !user.verifyPassword(password)) {
+            return done(null, false, {message:'Invalid username or password.',email:username});
+        } else if (user.status == "created"){
+            return done(null, false, {message:'User is not activated, check your email and click in the verification link.',email:username});
+        }
+        return done(null, user);
+    });
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  db.User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
+function isAuthenticated(req, res, next) {
+    var activateAuth = true;
+    if (activateAuth){
+        if (req.isAuthenticated()) { return next(); }
+        req.session.requestedUrl = req.url;
+        res.redirect('/login');
+    } else {
+        return next();
+    }
+}
+
+
+
+
