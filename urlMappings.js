@@ -12,7 +12,7 @@ exports.setup = function(app){
 // Place your application urls here
 function setupAppUrls(app){
     // pages
-    app.get('/',        isAuthenticated, routes.public.index);
+    app.get('/',                         routes.public.index);
     app.get('/home',    isAuthenticated, routes.home.index);
 }
 
@@ -34,7 +34,7 @@ function setupAuthUrls(app){
             }
             req.logIn(user, function(err) {
                 if (err) { return next(err); }
-                var url = req.session.requestedUrl ? req.session.requestedUrl : "/";
+                var url = req.session.requestedUrl ? req.session.requestedUrl : "/home";
                 req.session.requestedUrl = null;
                 return res.redirect(url);
             });
